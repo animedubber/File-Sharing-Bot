@@ -34,3 +34,11 @@ https://t.me/Madflix_Bots
 [04-Aug-25 14:34:15 - INFO] - bot - Bot commands menu has been set successfully!
 [04-Aug-25 14:34:16 - INFO] - aiohttp.access - 172.31.124.2 [04/Aug/2025:14:34:16 +0000] "GET / HTTP/1.1" 200 174 "https://b7e88eb0-a107-4522-bcbd-c37a22b0667b-00-10abjcmq5kryb.pike.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arpe%3A" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
 [04-Aug-25 14:34:28 - INFO] - plugins.set_commands - Bot commands menu has been set successfully!
+[04-Aug-25 14:45:21 - INFO] - root - Stop signal received (SIGTERM). Exiting...
+[04-Aug-25 14:45:29 - INFO] - bot - Bot Running...!
+
+Created By 
+https://t.me/Madflix_Bots
+[04-Aug-25 14:45:29 - INFO] - bot - ミ💖 MADFLIX BOTZ 💖彡
+[04-Aug-25 14:45:29 - INFO] - bot - Bot commands menu has been set successfully!
+[04-Aug-25 14:45:30 - INFO] - aiohttp.access - 172.31.124.2 [04/Aug/2025:14:45:30 +0000] "GET / HTTP/1.1" 200 174 "https://b7e88eb0-a107-4522-bcbd-c37a22b0667b-00-10abjcmq5kryb.pike.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ars2%3A" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"

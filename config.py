@@ -55,12 +55,12 @@ CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", None)
 
 PROTECT_CONTENT = True if os.environ.get('PROTECT_CONTENT', "False") == "True" else False
 
-DISABLE_CHANNEL_BUTTON = True if os.environ.get('DISABLE_CHANNEL_BUTTON', "True") == "True" else False
+DISABLE_CHANNEL_BUTTON = True if os.environ.get('DISABLE_CHANNEL_BUTTON', "False") == "True" else False
 
 BOT_STATS_TEXT = "<b>BOT UPTIME :</b>\n{uptime}"
 
 # Start Image URL
-START_PIC = os.environ.get("START_PIC", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe5yyvpZ2tgx3IkND9JwTSZJpVRZZ0-0LJfA&s")
+START_PIC = os.environ.get("START_PIC", "https://img.freepik.com/free-photo/anime-eyes-illustration_23-2151660535.jpg?semt=ais_hybrid&w=740&q=80")
 
 
 
@@ -111,6 +111,6 @@ FQDN = os.environ.get("FQDN", "your-app-name.koyeb.app")
 
 # Jishu Developer 
 # Don't Remove Credit 🥺
-# Telegram Channel @Madflix_Bots
+# Telegram Channel @Shivam_ANimes
 # Backup Channel @JishuBotz
-# Developer @JishuDeveloper
+# Developer @Shivam_Dubber

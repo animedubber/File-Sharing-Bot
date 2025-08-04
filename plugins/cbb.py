@@ -147,12 +147,20 @@ Click the buttons below to explore!""",
             await query.answer("❌ Access denied!", show_alert=True)
             return
 
-        await query.message.edit_text(
-            "🛠️ Admin Panel\n\nUse /admin command for full admin panel access.",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔙 Back", callback_data="start_back")]
-            ])
-        )
+        # Import admin panel function
+        from plugins.admin_panel import admin_panel
+        
+        # Create a mock message object for admin_panel function
+        class MockMessage:
+            def __init__(self, from_user, chat):
+                self.from_user = from_user
+                self.chat = chat
+                
+            async def reply_text(self, text, reply_markup=None):
+                await query.message.edit_text(text, reply_markup=reply_markup)
+        
+        mock_message = MockMessage(query.from_user, query.message.chat)
+        await admin_panel(client, mock_message)
 
 
 # Jishu Developer 

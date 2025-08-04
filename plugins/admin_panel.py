@@ -31,7 +31,7 @@ async def admin_panel(client: Bot, message: Message):
         reply_markup=InlineKeyboardMarkup(buttons)
     )
 
-@Bot.on_callback_query(filters.regex(r"^admin_"))
+@Bot.on_callback_query(filters.regex(r"^admin_") | filters.regex(r"^close$"))
 async def admin_callback_handler(client: Bot, query: CallbackQuery):
     user_id = query.from_user.id
     is_owner = user_id == OWNER_ID
@@ -139,6 +139,9 @@ async def admin_callback_handler(client: Bot, query: CallbackQuery):
     
     elif data == "admin_back":
         await admin_panel(client, query.message)
+    
+    elif data == "close":
+        await query.message.delete()
 
 @Bot.on_message(filters.text & filters.private & filters.user(ADMINS), group=10)
 async def handle_admin_input(client: Bot, message: Message):

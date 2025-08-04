@@ -105,6 +105,10 @@ def LOGGER(name: str) -> logging.Logger:
 
 
 
+# For Koyeb and Heroku deployment
+WEBHOOK = bool(os.environ.get("WEBHOOK", False))
+FQDN = os.environ.get("FQDN", "your-app-name.koyeb.app")
+
 # Jishu Developer 
 # Don't Remove Credit 🥺
 # Telegram Channel @Madflix_Bots

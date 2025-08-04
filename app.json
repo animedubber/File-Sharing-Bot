@@ -70,6 +70,31 @@
         "description": "auto delete in seconds",
         "value": "600",
         "required": false
+      },
+      "FORCE_SUB_CHANNEL2": {
+        "description": "id of the second force sub channel, put 0 to disable",
+        "value": "0",
+        "required": false
+      },
+      "FORCE_SUB_CHANNEL3": {
+        "description": "id of the third force sub channel, put 0 to disable", 
+        "value": "0",
+        "required": false
+      },
+      "FORCE_SUB_CHANNEL4": {
+        "description": "id of the fourth force sub channel, put 0 to disable",
+        "value": "0", 
+        "required": false
+      },
+      "WEBHOOK": {
+        "description": "Enable webhook for deployment platforms",
+        "value": "True",
+        "required": false
+      },
+      "FQDN": {
+        "description": "Fully qualified domain name for webhook",
+        "value": "your-app-name.koyeb.app",
+        "required": false
       }
   },
   "buildpacks": [

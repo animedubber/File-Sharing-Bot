@@ -139,6 +139,69 @@ async def admin_callback_handler(client: Bot, query: CallbackQuery):
             message=query.message, data="admin_auto_delete"
         ))
 
+    elif data == "admin_add_channel":
+        if not hasattr(client, 'awaiting_input'):
+            client.awaiting_input = {}
+
+        client.awaiting_input[user_id] = "add_channel"
+        await query.message.edit_text(
+            "<b>➕ Add Force Channel</b>\n\n"
+            "Send the channel ID or username:\n"
+            "• Channel ID: <code>-1001234567890</code>\n"
+            "• Username: <code>@channelname</code>\n\n"
+            "⚠️ Make sure the bot is admin in the channel!",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("❌ Cancel", callback_data="admin_force_channels")]
+            ])
+        )
+
+    elif data == "admin_remove_channel":
+        if not hasattr(client, 'awaiting_input'):
+            client.awaiting_input = {}
+
+        channels = await get_force_channels()
+        if not channels:
+            await query.answer("❌ No channels to remove!", show_alert=True)
+            return
+
+        text = "<b>➖ Remove Force Channel</b>\n\nActive channels:\n"
+        for i, channel_data in enumerate(channels, 1):
+            try:
+                channel_id = channel_data["id"] if isinstance(channel_data, dict) else channel_data
+                chat = await client.get_chat(channel_id)
+                name = chat.title or chat.first_name
+                text += f"{i}. {name} - <code>{channel_id}</code>\n"
+            except:
+                text += f"{i}. Unknown Channel - <code>{channel_id}</code>\n"
+
+        text += "\nSend the channel ID to remove:"
+
+        client.awaiting_input[user_id] = "remove_channel"
+        await query.message.edit_text(
+            text,
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("❌ Cancel", callback_data="admin_force_channels")]
+            ])
+        )
+
+    elif data == "admin_custom_delete":
+        if not hasattr(client, 'awaiting_input'):
+            client.awaiting_input = {}
+
+        client.awaiting_input[user_id] = "custom_delete_time"
+        await query.message.edit_text(
+            "<b>🔧 Custom Auto Delete Time</b>\n\n"
+            "Send the time in one of these formats:\n"
+            "• <code>30s</code> - 30 seconds\n"
+            "• <code>5m</code> - 5 minutes\n"
+            "• <code>2h</code> - 2 hours\n"
+            "• <code>1h30m</code> - 1 hour 30 minutes\n"
+            "• <code>3600</code> - 3600 seconds\n",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("❌ Cancel", callback_data="admin_auto_delete")]
+            ])
+        )
+
     elif data == "admin_back":
         await admin_panel(client, query.message)
 
@@ -149,13 +212,13 @@ async def admin_callback_handler(client: Bot, query: CallbackQuery):
 async def channel_type_callback(client: Bot, query: CallbackQuery):
     user_id = query.from_user.id
     data = query.data
-    
+
     if not hasattr(client, 'temp_channel_data') or user_id not in client.temp_channel_data:
         await query.answer("❌ Session expired! Please try again.", show_alert=True)
         return
-    
+
     channel_id = client.temp_channel_data[user_id]
-    
+
     if data == "type_normal":
         channel_type = "normal"
         type_text = "Normal Join"
@@ -165,7 +228,7 @@ async def channel_type_callback(client: Bot, query: CallbackQuery):
     else:
         await query.answer("❌ Invalid selection!", show_alert=True)
         return
-    
+
     try:
         success = await add_force_channel(channel_id, channel_type)
         if success:
@@ -187,12 +250,12 @@ async def channel_type_callback(client: Bot, query: CallbackQuery):
                     [InlineKeyboardButton("📢 Force Channels", callback_data="admin_force_channels")]
                 ])
             )
-        
+
         # Clean up temporary data
         del client.temp_channel_data[user_id]
         if hasattr(client, 'awaiting_input') and user_id in client.awaiting_input:
             del client.awaiting_input[user_id]
-            
+
     except Exception as e:
         await query.message.edit_text(
             f"❌ Error adding channel: {str(e)}",
@@ -298,58 +361,7 @@ async def admin_input_callback(client: Bot, query: CallbackQuery):
     data = query.data
     user_id = query.from_user.id
 
-    if data == "admin_add_channel":
-        client.awaiting_input[user_id] = "add_channel"
-        await query.message.edit_text(
-            "<b>➕ Add Force Channel</b>\n\n"
-            "Send the channel ID or username:\n"
-            "• Channel ID: <code>-1001234567890</code>\n"
-            "• Username: <code>@channelname</code>\n\n"
-            "⚠️ Make sure the bot is admin in the channel!",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("❌ Cancel", callback_data="admin_force_channels")]
-            ])
-        )
-
-    elif data == "admin_remove_channel":
-        channels = await get_force_channels()
-        if not channels:
-            await query.answer("❌ No channels to remove!", show_alert=True)
-            return
-
-        text = "<b>➖ Remove Force Channel</b>\n\nActive channels:\n"
-        for i, channel_id in enumerate(channels, 1):
-            try:
-                chat = await client.get_chat(channel_id)
-                name = chat.title or chat.first_name
-                text += f"{i}. {name} - <code>{channel_id}</code>\n"
-            except:
-                text += f"{i}. Unknown Channel - <code>{channel_id}</code>\n"
-
-        text += "\nSend the channel ID to remove:"
-
-        client.awaiting_input[user_id] = "remove_channel"
-        await query.message.edit_text(
-            text,
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("❌ Cancel", callback_data="admin_force_channels")]
-            ])
-        )
-
-    elif data == "admin_custom_delete":
-        client.awaiting_input[user_id] = "custom_delete_time"
-        await query.message.edit_text(
-            "<b>🔧 Custom Auto Delete Time</b>\n\n"
-            "Send the time in one of these formats:\n"
-            "• <code>30s</code> - 30 seconds\n"
-            "• <code>5m</code> - 5 minutes\n"
-            "• <code>2h</code> - 2 hours\n"
-            "• <code>1h30m</code> - 1 hour 30 minutes\n"
-            "• <code>3600</code> - 3600 seconds\n",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("❌ Cancel", callback_data="admin_auto_delete")]
-            ])
-        )
+    
 
 def parse_time_string(time_str):
     """Parse time string and return total seconds"""

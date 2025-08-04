@@ -12,13 +12,17 @@ from pyrogram.errors import FloodWait
 
 
 async def is_subscribed(filter, client, update):
-    if not FORCE_SUB_CHANNELS:
+    from database.database import get_force_channels
+    
+    force_channels = await get_force_channels()
+    if not force_channels:
         return True
+    
     user_id = update.from_user.id
     if user_id in ADMINS:
         return True
     
-    for channel_id in FORCE_SUB_CHANNELS:
+    for channel_id in force_channels:
         try:
             member = await client.get_chat_member(chat_id=channel_id, user_id=user_id)
             if member.status not in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:

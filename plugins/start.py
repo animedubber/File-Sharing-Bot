@@ -149,9 +149,12 @@ async def start_command(client: Client, message: Message):
     
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
-    buttons = []
+    from database.database import get_force_channels
     
-    for i, channel_id in enumerate(FORCE_SUB_CHANNELS):
+    buttons = []
+    force_channels = await get_force_channels()
+    
+    for i, channel_id in enumerate(force_channels):
         try:
             chat = await client.get_chat(channel_id)
             invite_link = chat.invite_link or f"https://t.me/{chat.username}"
@@ -248,13 +251,17 @@ async def send_text(client: Bot, message: Message):
 
 # Function to handle file deletion
 async def delete_files(messages, client, k):
-    await asyncio.sleep(FILE_AUTO_DELETE)  # Wait for the duration specified in config.py
+    from database.database import get_bot_settings
+    
+    settings = await get_bot_settings()
+    delete_time = settings.get('auto_delete_time', FILE_AUTO_DELETE)
+    
+    await asyncio.sleep(delete_time)
     for msg in messages:
         try:
             await client.delete_messages(chat_id=msg.chat.id, message_ids=[msg.id])
         except Exception as e:
             print(f"The attempt to delete the media {msg.id} was unsuccessful: {e}")
-    # await client.send_message(messages[0].chat.id, "Your Video / File Is Successfully Deleted ✅")
     await k.edit_text("Your Video / File Is Successfully Deleted ✅")
 
 

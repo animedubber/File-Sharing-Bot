@@ -1,4 +1,3 @@
-
 import os
 import asyncio
 from datetime import datetime
@@ -13,10 +12,10 @@ from database.database import full_userbase
 @Bot.on_callback_query()
 async def cb_handler(client: Bot, query: CallbackQuery):
     data = query.data
-    
+
     if data == "close":
         await query.message.delete()
-    
+
     elif data == "about":
         await query.message.edit_text(
             text=f"""<b>🤖 Bot Name:</b> <code>{client.me.first_name}</code>
@@ -30,7 +29,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 [InlineKeyboardButton("🔙 Back", callback_data="start_back")]
             ])
         )
-    
+
     elif data == "help":
         await query.message.edit_text(
             text="""<b>📋 Bot Commands:</b>
@@ -52,10 +51,10 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 [InlineKeyboardButton("🔙 Back", callback_data="start_back")]
             ])
         )
-    
+
     elif data == "get_id":
         await query.answer(f"Your ID: {query.from_user.id}", show_alert=True)
-    
+
     elif data == "bot_stats":
         if query.from_user.id in ADMINS:
             users = await full_userbase()
@@ -66,7 +65,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             )
         else:
             await query.answer("❌ Admin only feature!", show_alert=True)
-    
+
     elif data == "batch_help":
         await query.message.edit_text(
             text="""<b>📦 Batch Link Generator</b>
@@ -84,7 +83,7 @@ Use <code>/batch</code> command to create links for multiple posts at once.
                 [InlineKeyboardButton("🔙 Back", callback_data="start_back")]
             ])
         )
-    
+
     elif data == "genlink_help":
         await query.message.edit_text(
             text="""<b>🔗 Single Link Generator</b>
@@ -102,7 +101,7 @@ Use <code>/genlink</code> command to create link for a single post.
                 [InlineKeyboardButton("🔙 Back", callback_data="start_back")]
             ])
         )
-    
+
     elif data == "start_back":
         reply_markup = InlineKeyboardMarkup(
             [
@@ -120,10 +119,13 @@ Use <code>/genlink</code> command to create link for a single post.
                 ],
                 [
                     InlineKeyboardButton("🔒 Close", callback_data="close")
+                ],
+                [
+                    InlineKeyboardButton("⚙️ Admin Panel", callback_data="admin_panel_inline")
                 ]
             ]
         )
-        
+
         await query.message.edit_text(
             text=f"""Hello {query.from_user.mention}
 
@@ -139,6 +141,17 @@ I Can Store Private Files In Specified Channel And Other Users Can Access It Fro
 
 Click the buttons below to explore!""",
             reply_markup=reply_markup
+        )
+    elif data == "admin_panel_inline":
+        if query.from_user.id not in ADMINS:
+            await query.answer("❌ Access denied!", show_alert=True)
+            return
+
+        await query.message.edit_text(
+            "🛠️ Admin Panel\n\nUse /admin command for full admin panel access.",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("🔙 Back", callback_data="start_back")]
+            ])
         )
 
 

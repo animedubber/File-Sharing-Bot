@@ -1,126 +1,191 @@
-<img src="https://graph.org/file/cd2b471f3474d69740df5.jpg" alt="logo" target="/blank">
 
-<h1 align="center">
- <b><a href="https://t.me/Madflix_Bots" target="/blank"> File Sharing Bot </a></>
-</h1>
+# 🤖 File Sharing Bot
 
-<p align="center">🩵 Thanks for Being Here 🩵</p>
+A powerful Telegram bot for secure file sharing with auto-delete functionality, multi-channel force subscription, and batch link generation.
 
+![Bot Preview](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe5yyvpZ2tgx3IkND9JwTSZJpVRZZ0-0LJfA&s)
 
-### CONFIGS VARIABLES
+## ✨ Features
 
-* `API_HASH` Your API Hash from my.telegram.org
-* `APP_ID` Your API ID from my.telegram.org
-* `BOT_TOKEN` Your bot token from @BotFather
-* `OWNER_ID` Must enter Your Telegram Id
-* `FILE_AUTO_DELETE` File auto delete, value in seconds
-* `CHANNEL_ID` Your Channel ID eg:- -100xxxxxxxx
-* `DB_URL` Your mongo db url
-* `DB_NAME` Your mongo db session name
-* `ADMINS` Optional: A space separated list of user_ids of Admins, they can only create links
-* `START_MESSAGE` Optional: start message of bot, use HTML and <a href='https://github.com/JishuDeveloper/File-Sharing-Bot/blob/main/README.md#start_message'>fillings</a>
-* `FORCE_SUB_MESSAGE`Optional:Force sub message of bot, use HTML and Fillings
-* `FORCE_SUB_CHANNEL` Optional: ForceSub Channel ID, leave 0 if you want disable force sub
-* `PROTECT_CONTENT` Optional: True if you need to prevent files from forwarding
+- 🔐 **Secure File Storage** - Store files in private channels
+- 🔗 **Link Generation** - Create shareable links for files
+- 🗑️ **Auto Delete** - Files automatically delete after specified time
+- 📦 **Batch Links** - Generate single link for multiple files
+- 🛡️ **4 Force Channels** - Support for up to 4 force subscription channels
+- 👥 **User Management** - Track users and broadcast messages
+- 🎨 **Custom UI** - Beautiful interface with inline buttons
+- 📊 **Statistics** - Admin dashboard with bot statistics
+- 🔄 **Auto Deployment** - Easy deployment on Replit
 
+## 🚀 Quick Deploy on Replit
 
+[![Deploy on Replit](https://replit.com/badge/github/JishuDeveloper/File-Sharing-Bot)](https://replit.com/new/github/JishuDeveloper/File-Sharing-Bot)
 
-### EXTRA VARIABLES
+### Step 1: Fork the Repository
+1. Click the "Deploy on Replit" button above
+2. Sign in to your Replit account
+3. Fork the repository to your account
 
-* `CUSTOM_CAPTION` put your Custom caption text if you want Setup Custom Caption, you can use HTML and <a href='https://github.com/JishuDeveloper/File-Sharing-Bot/blob/main/README.md#custom_caption'>fillings</a> for formatting (only for documents)
-* `DISABLE_CHANNEL_BUTTON` Put True to Disable Channel Share Button, Default if False
-* `BOT_STATS_TEXT` put your custom text for stats command, use HTML and <a href='https://github.com/JishuDeveloper/File-Sharing-Bot/blob/main/README.md#custom_stats'>fillings</a>
-* `USER_REPLY_TEXT` put your text to show when user sends any message, use HTML
+### Step 2: Set Environment Variables
+Go to the **Secrets** tab in Replit and add these variables:
 
+#### Required Variables:
+- `BOT_TOKEN` - Get from [@BotFather](https://t.me/BotFather)
+- `API_ID` - Get from [my.telegram.org](https://my.telegram.org)
+- `API_HASH` - Get from [my.telegram.org](https://my.telegram.org)
+- `CHANNEL_ID` - Your database channel ID (make bot admin)
+- `OWNER_ID` - Your Telegram user ID
+- `DB_URL` - MongoDB connection string
+- `DB_NAME` - MongoDB database name
 
+#### Optional Variables:
+- `FORCE_SUB_CHANNEL` - First force channel ID (0 to disable)
+- `FORCE_SUB_CHANNEL2` - Second force channel ID
+- `FORCE_SUB_CHANNEL3` - Third force channel ID  
+- `FORCE_SUB_CHANNEL4` - Fourth force channel ID
+- `ADMINS` - Admin user IDs (space-separated)
+- `FILE_AUTO_DELETE` - Auto delete time in seconds (default: 600)
+- `START_PIC` - Start message image URL
+- `CUSTOM_CAPTION` - Custom file caption
+- `PROTECT_CONTENT` - Enable content protection (True/False)
 
-### DEPLOYEMENT SUPPORT
+### Step 3: Setup Channels
+1. Create a private channel for database storage
+2. Add your bot as admin with all permissions
+3. Create force subscription channels (optional)
+4. Add bot as admin in force channels with "Invite Users via Link" permission
 
-<summary>Deploy To Koyeb</summary>
-<p>
-<br>                 
-<a target="/blank" href="https://app.koyeb.com/deploy?type=git&repository=github.com/JishuDeveloper/File-Sharing-Bot&branch=main&name=file-sharing-bot" >
-  <img src="https://www.koyeb.com/static/images/deploy/button.svg" alt="Deploy">
-</a>
-</p>
+### Step 4: Deploy
+1. Click the **Run** button in Replit
+2. Your bot will start automatically
+3. The bot is now live and accessible via web interface
 
-<summary>Deploy To Heroku</summary>
-<p>
-<br>
-<a href="https://heroku.com/deploy?template=https://github.com/JishuDeveloper/File-Sharing-Bot">
-  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
-</a>
-</p>
+## 📱 Bot Commands
 
+### 👥 User Commands:
+- `/start` - 🚀 Start the bot or get posts
+- `/id` - 🆔 Check your user ID
 
+### 👨‍💻 Admin Commands:
+- `/batch` - 📦 Create link for multiple posts  
+- `/genlink` - 🔗 Create link for one post
+- `/users` - 👥 View bot statistics
+- `/broadcast` - 📢 Broadcast messages to users  
+- `/stats` - 📊 Check bot uptime
 
-### FEATURES
-- Fully customisable.
-- Auto Delete Added.
-- 3 Branch Available.
-- main Branch Means 1 force subs.
-- 2-force-subs Means 2 force subs.
-- 4-force-subs Means 4 force subs.
-- Customisable welcome & Forcesub messages.
-- More than one Posts in One Link.
-- Can be deployed on heroku directly.
-- Deploy to Koyeb + Heroku + Railway.
-- Developer Service 24x7.
+## 🔧 How to Use
 
+### For Users:
+1. Start the bot with `/start`
+2. Join required channels if force subscription is enabled
+3. Use shared links to access files
+4. Files will auto-delete after the specified time
 
+### For Admins:
+1. Send files directly to the bot to generate links
+2. Use `/batch` for multiple file links
+3. Use `/genlink` for single file links  
+4. Use `/broadcast` to send messages to all users
+5. Use `/stats` to view bot statistics
 
-### SETUP
+## 🎨 Bot Interface
 
-- Add the bot to Database Channel with all permission
-- Add bot to ForceSub channel as Admin with Invite Users via Link Permission if you enabled ForceSub
+The bot features a modern interface with:
+- 🖼️ **Custom Start Image** - Attractive welcome screen
+- 🎛️ **Inline Buttons** - Easy navigation
+- 📊 **Statistics Dashboard** - Real-time bot stats
+- 💬 **Interactive Callbacks** - Smooth user experience
 
+## 🛠️ Advanced Configuration
 
-### FILLINGS
-#### START_MESSAGE | FORCE_SUB_MESSAGE
+### Database Setup:
+1. Create a MongoDB database (Free tier available)
+2. Get connection string from MongoDB Atlas
+3. Add to `DB_URL` variable
 
-* `{first}` - User first name
-* `{last}` - User last name
-* `{id}` - User ID
-* `{mention}` - Mention the user
-* `{username}` - Username
-
-#### CUSTOM_CAPTION
-
-* `{filename}` - file name of the Document
-* `{previouscaption}` - Original Caption
-
-#### CUSTOM_STATS
-
-* `{uptime}` - Bot Uptime
-
-
-### ALL COMMANDS
-
+### Force Subscription:
+```env
+FORCE_SUB_CHANNEL=-1001234567890
+FORCE_SUB_CHANNEL2=-1001234567891  
+FORCE_SUB_CHANNEL3=-1001234567892
+FORCE_SUB_CHANNEL4=-1001234567893
 ```
-start - start the bot or get posts
-batch - create link for more than one posts
-genlink - create link for one post
-id - To check user id
-users - view bot statistics
-broadcast - broadcast any messages to bot users
-stats - checking your bot uptime
+
+### Custom Messages:
+```env
+START_MESSAGE=Welcome {mention}! I can help you share files securely.
+FORCE_SUB_MESSAGE=Please join our channels to use the bot.
+CUSTOM_CAPTION=📁 {filename}\n\n{previouscaption}
 ```
 
+## 🔍 Troubleshooting
 
+### Common Issues:
 
-### ❤️ RESPECTING ❤️
-- [JishuDeveloper](https://github.com/JishuDeveloper)
-- [Madflix Official](https://github.com/jishusinha)
+**Bot not starting:**
+- Check if all required variables are set
+- Verify bot token is correct
+- Ensure MongoDB URL is valid
 
-### 😍 BOTS CHANNEL 😍
-- [Madflix Botz](https://t.me/Madflix_Bots)
-- [Jishu Botz](https://t.me/JishuBotz)
+**Force subscription not working:**
+- Make sure bot is admin in force channels
+- Check channel IDs are correct (include negative sign)
+- Verify "Invite Users via Link" permission is enabled
 
-### 💕 CONTACT DEVELOPER 💕
-- [Jishu Developer](https://t.me/JishuDeveloper)
-- [Madflix Official](https://t.me/MadflixOfficials)
+**Files not saving:**
+- Ensure bot is admin in database channel
+- Check CHANNEL_ID is correct
+- Verify channel exists and is accessible
 
-### ☕ BUY ME A COFFEE ☕
-- [PayPal](https://paypal.me/jishudeveloper/2.50USD)
-- [PhonePe](https://graph.org/file/6822df5af3a2e80637172.jpg)
-- [UPI](https://graph.org/file/b831109be4acff5c966d2.jpg)
+## 📊 MongoDB Setup Guide
+
+1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Create a free account
+3. Create a new cluster
+4. Go to Database Access → Add New User
+5. Go to Network Access → Add IP (0.0.0.0/0 for global access)
+6. Go to Clusters → Connect → Connect Application
+7. Copy the connection string and add to `DB_URL`
+
+## 🔒 Security Features
+
+- Content protection to prevent forwarding
+- Auto-delete to prevent permanent storage
+- Force subscription for access control
+- Admin-only file upload
+- Secure link generation
+
+## 🤝 Support & Updates
+
+- 📢 **Updates Channel:** [@Madflix_Bots](https://t.me/Madflix_Bots)
+- 🆘 **Support Group:** [@MadflixBots_Support](https://t.me/MadflixBots_Support)
+- 👨‍💻 **Developer:** [@JishuDeveloper](https://t.me/JishuDeveloper)
+
+## ⭐ Features Coming Soon
+
+- [ ] Multiple database channels support
+- [ ] Custom auto-delete times per file
+- [ ] File encryption
+- [ ] Download statistics
+- [ ] User subscription management
+- [ ] API integration
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Credits
+
+- **Developer:** [Jishu Developer](https://github.com/JishuDeveloper)
+- **Channel:** [Madflix Bots](https://t.me/Madflix_Bots)
+- **Framework:** [Pyrogram](https://github.com/pyrogram/pyrogram)
+
+---
+
+<div align="center">
+
+**⭐ Star this repository if you found it helpful!**
+
+**Made with ❤️ by [Jishu Developer](https://github.com/JishuDeveloper)**
+
+</div>

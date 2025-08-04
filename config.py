@@ -1,3 +1,4 @@
+
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -16,7 +17,15 @@ DB_NAME = os.environ.get("DB_NAME", "madflixbotz")
 
 
 CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1002813558535"))
+
+# Support for 4 Force Channels
 FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "0"))
+FORCE_SUB_CHANNEL2 = int(os.environ.get("FORCE_SUB_CHANNEL2", "0"))
+FORCE_SUB_CHANNEL3 = int(os.environ.get("FORCE_SUB_CHANNEL3", "0"))
+FORCE_SUB_CHANNEL4 = int(os.environ.get("FORCE_SUB_CHANNEL4", "0"))
+
+FORCE_SUB_CHANNELS = [FORCE_SUB_CHANNEL, FORCE_SUB_CHANNEL2, FORCE_SUB_CHANNEL3, FORCE_SUB_CHANNEL4]
+FORCE_SUB_CHANNELS = [channel for channel in FORCE_SUB_CHANNELS if channel != 0]
 
 
 FILE_AUTO_DELETE = int(os.getenv("FILE_AUTO_DELETE", "600")) # auto delete in seconds
@@ -50,7 +59,8 @@ DISABLE_CHANNEL_BUTTON = True if os.environ.get('DISABLE_CHANNEL_BUTTON', "True"
 
 BOT_STATS_TEXT = "<b>BOT UPTIME :</b>\n{uptime}"
 
-
+# Start Image URL
+START_PIC = os.environ.get("START_PIC", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe5yyvpZ2tgx3IkND9JwTSZJpVRZZ0-0LJfA&s")
 
 
 

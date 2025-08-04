@@ -152,47 +152,52 @@ async def handle_admin_input(client: Bot, message: Message):
         input_type = client.awaiting_input[message.from_user.id]
 
         if input_type == "add_channel":
-            channel_input = message.text.strip()
+            try:
+                # Handle channel ID or username
+                channel_input = message.text.strip()
+                if channel_input.startswith('@'):
+                    channel_input = channel_input[1:]  # Remove @
 
-            # Handle username format
-            if channel_input.startswith('@'):
-                try:
+                if channel_input.startswith('-') or channel_input.isdigit():
+                    channel_id = int(channel_input)
+                else:
+                    # It's a username, get the channel
                     chat = await client.get_chat(channel_input)
                     channel_id = chat.id
-                except Exception as e:
-                    await message.reply("❌ Invalid channel username or bot cannot access the channel!")
-                    del client.awaiting_input[message.from_user.id]
-                    return
-            else:
-                # Handle channel ID format
+
+                # Check if bot is admin
                 try:
-                    channel_id = int(channel_input)
-                    if channel_id > 0:
-                        channel_id = -channel_id  # Convert to negative for channels
-                except ValueError:
-                    await message.reply("❌ Invalid channel ID format! Please send a valid channel ID like -1001234567890")
-                    del client.awaiting_input[message.from_user.id]
+                    bot_member = await client.get_chat_member(channel_id, client.me.id)
+                    if bot_member.status not in ['administrator', 'creator']:
+                        await message.reply("❌ Bot is not admin in this channel!")
+                        return
+                except:
+                    await message.reply(
+                        "❌ Cannot access channel or bot is not admin!")
                     return
 
-            # Verify bot is admin in the channel
-            try:
-                chat_member = await client.get_chat_member(channel_id, client.me.id)
-                if chat_member.status not in ['administrator', 'creator']:
-                    await message.reply("❌ Bot must be admin in the channel!")
-                    return
-            except:
-                await message.reply("❌ Cannot access channel or bot is not admin!")
-                return
+                # Store channel ID and ask for type
+                if not hasattr(client, 'temp_channel_data'):
+                    client.temp_channel_data = {}
 
-            # Add channel to database
-            success = await add_force_channel(channel_id)
-            if success:
+                client.temp_channel_data[message.from_user.id] = channel_id
+                client.awaiting_input[message.from_user.id] = "select_channel_type"
+
                 chat = await client.get_chat(channel_id)
-                await message.reply(f"✅ Channel '{chat.title}' added successfully!")
-            else:
-                await message.reply("❌ Channel already exists or error occurred!")
+                await message.reply(
+                    f"✅ Channel '{chat.title}' verified!\n\n"
+                    "Now select the channel type:",
+                    reply_markup=InlineKeyboardMarkup([
+                        [InlineKeyboardButton("📢 Normal Join", callback_data="type_normal")],
+                        [InlineKeyboardButton("📝 Request Join", callback_data="type_request")],
+                        [InlineKeyboardButton("❌ Cancel", callback_data="admin_force_channels")]
+                    ])
+                )
+                return  # Don't delete awaiting_input yet
 
-            del client.awaiting_input[message.from_user.id]
+            except Exception as e:
+                await message.reply(f"❌ Error: {str(e)}")
+                del client.awaiting_input[message.from_user.id]
 
         elif input_type == "remove_channel":
             try:

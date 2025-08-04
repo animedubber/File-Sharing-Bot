@@ -155,11 +155,26 @@ async def not_joined(client: Client, message: Message):
     buttons = []
     force_channels = await get_force_channels()
     
-    for i, channel_id in enumerate(force_channels):
+    for i, channel_data in enumerate(force_channels):
         try:
+            # Handle both old format (int) and new format (dict)
+            if isinstance(channel_data, dict):
+                channel_id = channel_data["id"]
+                channel_type = channel_data.get("type", "normal")
+            else:
+                channel_id = channel_data
+                channel_type = "normal"
+            
             chat = await client.get_chat(channel_id)
             invite_link = chat.invite_link or f"https://t.me/{chat.username}"
-            buttons.append([InlineKeyboardButton(text=f"📢 Join Channel {i+1}", url=invite_link)])
+            
+            # Different button text based on type
+            if channel_type == "request":
+                button_text = f"📝 Request to Join {chat.title or f'Channel {i+1}'}"
+            else:
+                button_text = f"📢 Join {chat.title or f'Channel {i+1}'}"
+                
+            buttons.append([InlineKeyboardButton(text=button_text, url=invite_link)])
         except:
             pass
     

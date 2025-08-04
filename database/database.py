@@ -50,27 +50,51 @@ async def update_bot_settings(key, value):
         LOGGER(__name__).error(f"Error updating bot settings: {e}")
         return False
 
-# Force Channels Functions
+# Force Channels Functions with types
 async def get_force_channels():
     try:
         doc = force_channels_col.find_one({"_id": "channels"})
-        return doc.get("channel_list", []) if doc else []
+        if not doc:
+            return []
+        
+        # Handle old format (list) and new format (dict with types)
+        channels_data = doc.get("channel_list", [])
+        if isinstance(channels_data, list):
+            # Convert old format to new format
+            return [{"id": ch, "type": "normal"} for ch in channels_data]
+        else:
+            return channels_data
     except Exception as e:
         LOGGER(__name__).error(f"Error getting force channels: {e}")
         return []
 
-async def add_force_channel(channel_id):
+async def get_force_channel_ids():
     try:
         channels = await get_force_channels()
-        if channel_id not in channels:
-            channels.append(channel_id)
-            force_channels_col.update_one(
-                {"_id": "channels"},
-                {"$set": {"channel_list": channels}},
-                upsert=True
-            )
-            return True
-        return False
+        return [ch["id"] if isinstance(ch, dict) else ch for ch in channels]
+    except Exception as e:
+        LOGGER(__name__).error(f"Error getting force channel IDs: {e}")
+        return []
+
+async def add_force_channel(channel_id, channel_type="normal"):
+    try:
+        channels = await get_force_channels()
+        
+        # Check if channel already exists
+        existing_ids = [ch["id"] if isinstance(ch, dict) else ch for ch in channels]
+        if channel_id in existing_ids:
+            return False
+            
+        # Add new channel with type
+        new_channel = {"id": channel_id, "type": channel_type}
+        channels.append(new_channel)
+        
+        force_channels_col.update_one(
+            {"_id": "channels"},
+            {"$set": {"channel_list": channels}},
+            upsert=True
+        )
+        return True
     except Exception as e:
         LOGGER(__name__).error(f"Error adding force channel: {e}")
         return False
@@ -78,17 +102,44 @@ async def add_force_channel(channel_id):
 async def remove_force_channel(channel_id):
     try:
         channels = await get_force_channels()
-        if channel_id in channels:
-            channels.remove(channel_id)
+        updated_channels = []
+        
+        for ch in channels:
+            ch_id = ch["id"] if isinstance(ch, dict) else ch
+            if ch_id != channel_id:
+                updated_channels.append(ch)
+        
+        force_channels_col.update_one(
+            {"_id": "channels"},
+            {"$set": {"channel_list": updated_channels}},
+            upsert=True
+        )
+        return True
+    except Exception as e:
+        LOGGER(__name__).error(f"Error removing force channel: {e}")
+        return False
+
+async def update_channel_type(channel_id, new_type):
+    try:
+        channels = await get_force_channels()
+        updated = False
+        
+        for ch in channels:
+            if isinstance(ch, dict) and ch["id"] == channel_id:
+                ch["type"] = new_type
+                updated = True
+                break
+        
+        if updated:
             force_channels_col.update_one(
                 {"_id": "channels"},
                 {"$set": {"channel_list": channels}},
                 upsert=True
             )
-            return True
-        return False
+        
+        return updated
     except Exception as e:
-        LOGGER(__name__).error(f"Error removing force channel: {e}")
+        LOGGER(__name__).error(f"Error updating channel type: {e}")
         return False
 
 async def update_auto_delete_time(seconds):

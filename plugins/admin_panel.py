@@ -145,6 +145,62 @@ async def admin_callback_handler(client: Bot, query: CallbackQuery):
     elif data == "close":
         await query.message.delete()
 
+@Bot.on_callback_query(filters.regex(r"^type_"))
+async def channel_type_callback(client: Bot, query: CallbackQuery):
+    user_id = query.from_user.id
+    data = query.data
+    
+    if not hasattr(client, 'temp_channel_data') or user_id not in client.temp_channel_data:
+        await query.answer("❌ Session expired! Please try again.", show_alert=True)
+        return
+    
+    channel_id = client.temp_channel_data[user_id]
+    
+    if data == "type_normal":
+        channel_type = "normal"
+        type_text = "Normal Join"
+    elif data == "type_request":
+        channel_type = "request"
+        type_text = "Request Join"
+    else:
+        await query.answer("❌ Invalid selection!", show_alert=True)
+        return
+    
+    try:
+        success = await add_force_channel(channel_id, channel_type)
+        if success:
+            chat = await client.get_chat(channel_id)
+            await query.message.edit_text(
+                f"✅ Channel Added Successfully!\n\n"
+                f"<b>Channel:</b> {chat.title}\n"
+                f"<b>ID:</b> <code>{channel_id}</code>\n"
+                f"<b>Type:</b> {type_text}",
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("📢 Force Channels", callback_data="admin_force_channels")],
+                    [InlineKeyboardButton("🔙 Back to Admin", callback_data="admin_back")]
+                ])
+            )
+        else:
+            await query.message.edit_text(
+                "❌ Channel already exists or error occurred!",
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("📢 Force Channels", callback_data="admin_force_channels")]
+                ])
+            )
+        
+        # Clean up temporary data
+        del client.temp_channel_data[user_id]
+        if hasattr(client, 'awaiting_input') and user_id in client.awaiting_input:
+            del client.awaiting_input[user_id]
+            
+    except Exception as e:
+        await query.message.edit_text(
+            f"❌ Error adding channel: {str(e)}",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("📢 Force Channels", callback_data="admin_force_channels")]
+            ])
+        )
+
 @Bot.on_message(filters.text & filters.private & filters.user(ADMINS), group=10)
 async def handle_admin_input(client: Bot, message: Message):
     # Handle admin inputs for various settings
@@ -170,10 +226,14 @@ async def handle_admin_input(client: Bot, message: Message):
                     bot_member = await client.get_chat_member(channel_id, client.me.id)
                     if bot_member.status not in ['administrator', 'creator']:
                         await message.reply("❌ Bot is not admin in this channel!")
+                        if message.from_user.id in client.awaiting_input:
+                            del client.awaiting_input[message.from_user.id]
                         return
                 except:
                     await message.reply(
                         "❌ Cannot access channel or bot is not admin!")
+                    if message.from_user.id in client.awaiting_input:
+                        del client.awaiting_input[message.from_user.id]
                     return
 
                 # Store channel ID and ask for type
@@ -181,7 +241,7 @@ async def handle_admin_input(client: Bot, message: Message):
                     client.temp_channel_data = {}
 
                 client.temp_channel_data[message.from_user.id] = channel_id
-                client.awaiting_input[message.from_user.id] = "select_channel_type"
+                # Don't delete awaiting_input here, keep it for the callback
 
                 chat = await client.get_chat(channel_id)
                 await message.reply(
@@ -197,7 +257,8 @@ async def handle_admin_input(client: Bot, message: Message):
 
             except Exception as e:
                 await message.reply(f"❌ Error: {str(e)}")
-                del client.awaiting_input[message.from_user.id]
+                if message.from_user.id in client.awaiting_input:
+                    del client.awaiting_input[message.from_user.id]
 
         elif input_type == "remove_channel":
             try:

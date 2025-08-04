@@ -51,3 +51,10 @@ https://t.me/Madflix_Bots
 [04-Aug-25 14:59:57 - INFO] - bot - ミ💖 MADFLIX BOTZ 💖彡
 [04-Aug-25 14:59:58 - INFO] - bot - Bot commands menu has been set successfully!
 [04-Aug-25 14:59:59 - INFO] - aiohttp.access - 172.31.124.2 [04/Aug/2025:14:59:59 +0000] "GET / HTTP/1.1" 200 174 "https://b7e88eb0-a107-4522-bcbd-c37a22b0667b-00-10abjcmq5kryb.pike.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1du%3A" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[04-Aug-25 15:03:20 - INFO] - bot - Bot Running...!
+
+Created By 
+https://t.me/Madflix_Bots
+[04-Aug-25 15:03:20 - INFO] - bot - ミ💖 MADFLIX BOTZ 💖彡
+[04-Aug-25 15:03:20 - INFO] - bot - Bot commands menu has been set successfully!
+[04-Aug-25 15:03:21 - INFO] - aiohttp.access - 172.31.83.162 [04/Aug/2025:15:03:21 +0000] "GET / HTTP/1.1" 200 174 "https://b7e88eb0-a107-4522-bcbd-c37a22b0667b-00-10abjcmq5kryb.pike.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1gq%3A" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"

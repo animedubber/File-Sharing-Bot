@@ -58,6 +58,24 @@ class Bot(Client):
         self.LOGGER(__name__).info(f"Bot Running...!\n\nCreated By \nhttps://t.me/Madflix_Bots")
         self.LOGGER(__name__).info(f"""ミ💖 MADFLIX BOTZ 💖彡""")
         self.username = usr_bot_me.username
+        
+        # Set bot commands menu
+        from pyrogram.types import BotCommand
+        commands = [
+            BotCommand("start", "Start the bot or get posts"),
+            BotCommand("batch", "Create link for multiple posts"),
+            BotCommand("genlink", "Create link for one post"),
+            BotCommand("id", "Check user ID"),
+            BotCommand("users", "View bot statistics (Admin only)"),
+            BotCommand("broadcast", "Broadcast messages to users (Admin only)"),
+            BotCommand("stats", "Check bot uptime (Admin only)"),
+        ]
+        
+        try:
+            await self.set_bot_commands(commands)
+            self.LOGGER(__name__).info("Bot commands menu has been set successfully!")
+        except Exception as e:
+            self.LOGGER(__name__).error(f"Failed to set bot commands: {e}")
         #web-response
         app = web.AppRunner(await web_server())
         await app.setup()
